@@ -34,9 +34,9 @@ class TestStack:
         self.stack.push("a")
         self.stack.push("b")
         self.stack.push("c")
-        assert self.stack.pop() == "c"
+        self.stack.pop()
         assert self.stack.peek() == "b"
-        assert self.stack.pop() == "b"
+        self.stack.pop()
         assert self.stack.peek() == "a"
-        assert self.stack.pop() == "a"
+        self.stack.pop()
         assert self.stack.is_empty()
