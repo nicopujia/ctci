@@ -4,7 +4,8 @@ from src.stacks_and_queues import Stack
 
 
 class TestStack:
-    stack = Stack()
+    def setup_method(self):
+        self.stack = Stack()
 
     def test_is_empty_on_new_stack(self):
         assert self.stack.is_empty()
