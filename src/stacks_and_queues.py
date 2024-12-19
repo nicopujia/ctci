@@ -1,28 +1,28 @@
 from typing import Any
 
-from .linked_lists import Node
+from .linked_lists import LinkedListNode
 
 
 class Stack:
-    head = None
+    top: LinkedListNode | None = None
 
     def push(self, item: Any) -> None:
         """Add an item to the top of the stack."""
-        self.head = Node(item, self.head if self.head else None)
+        self.top = LinkedListNode(item, self.top if self.top else None)
 
     def pop(self) -> None:
         """Remove the top item from the stack."""
-        if not self.head:
+        if not self.top:
             raise IndexError
-        self.head = self.head.next
-        print(self.head)
+        self.top = self.top.next
+        print(self.top)
 
     def peek(self) -> Any:
         """Return the top of the stack."""
-        if not self.head:
+        if not self.top:
             raise IndexError
-        return self.head.data
+        return self.top.data
 
     def is_empty(self) -> bool:
         """Return true if and only if the stack is empty."""
-        return not bool(self.head)
+        return not bool(self.top)

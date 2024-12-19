@@ -1,86 +1,33 @@
-class Node:
-    def __init__(self, data, next=None):
+from typing import Any, Generator, Self
+
+
+class LinkedListNode:
+    def __init__(self, data: Any, next: Self | None = None) -> None:
         self.data = data
         self.next = next
-    
-    def __repr__(self):
+
+    def __repr__(self) -> str:
         return str(self.data) + (f" → {self.next}" if self.next else "")
 
-    def __iter__(self):
+    def __iter__(self) -> Generator[Self]:
         node = self
         yield node
         while node.next:
             node = node.next
             yield node
 
-    def __next__(self):
+    def __next__(self) -> Self:
         return self.next
 
-    def __gt__(self, node):
-        return self.data > node.data
+    def __gt__(self, other: Self) -> bool:
+        return self.data > other.data
 
-    def __lt__(self, node):
-        return self.data < node.data
-
-    def insert_after(self, node):
-        node.next = self.next
-        self.next = node
-    
-    def append_to_tail(self, node):
-        for tail in self:
-            pass
-        tail.next = node
-    
-    def remove_node(head, node):
-        if head == node:
-            return head
-
-        prev = head
-        while prev.next is not node and prev:
-            prev = prev.next
-
-        if prev:
-            prev.next = prev.next.next
-            return head
-
-        raise ValueError()
+    def __lt__(self, other: Self) -> bool:
+        return self.data < other.data
 
 
-class DoublyNode:
-    def __init__(self, data, next=None, prev=None):
-        self.data = data
-        self.next = next
-        self.prev = prev
-
-    def __repr__(self):
-        return (
-            f"{self.prev} <-> " if self.prev else ""
-        ) + self.data + (
-            f" <-> {self.next}" if self.next else ""
-        )
-
-    def insert_after(self, node):
-        node.next = self.next
-        node.prev = self
-        self.next = node
-
-    def append_to_tail(self, node):
-        tail = self.get_tail()
-        tail.next = node
-        node.prev = tail
-    
-    def get_tail(self):
-        tail = self
-        while tail.next != None:
-            tail = tail.next
-        return tail
-    
-    def remove(self):
-        self.next.prev = self.prev
-        self.prev.next = self.next
-
-
-def remove_dups(head): # O(n^2), O(1)
+# O(n^2), O(1)
+def remove_dups(head: LinkedListNode) -> LinkedListNode:
     # TODO: doesn't remove last element
     for node in head:
         if not node.next:
@@ -94,46 +41,33 @@ def remove_dups(head): # O(n^2), O(1)
     return head
 
 
-def get_kth_to_last(head, k): # O(n), O(1)
+# O(n), O(1)
+def get_kth_to_last(head: LinkedListNode, k: int) -> LinkedListNode:
     length = 0
     for _ in head:
         length += 1
-    
+
     for i, node in enumerate(head):
         if length - i == k:
             return node
 
     raise IndexError()
 
-def delete_middle_node(node): # O(n), O(n)
-    if self.next:
-        self.data = self.next.data
-        if self.next.next:
-            self.next.delete()
+
+# O(n), O(n)
+def delete_middle_node(node: LinkedListNode) -> None:
+    if node.next:
+        node.data = node.next.data
+        if node.next.next:
+            node.next.delete()
         else:
-            self.next = None
+            node.next = None
     else:
-        self = None
+        node = None
 
 
-def partition(head, x): 
-    # Book solution:
-    # O(n), O(1)
-    tail = node = head
-    while node:
-        next = node.next
-        if node < x:
-            node.next = head
-            head = node
-        else:
-            tail.next = node
-            tail = node
-        node = next
-    tail.next = None
-    return head
-
-    # My solution:
-    # O(n), O(n)
+# O(n), O(n)*
+def partition(head: LinkedListNode, x: int) -> LinkedListNode:
     left, right = [], []
     for node in head:
         if node < x:
@@ -146,51 +80,58 @@ def partition(head, x):
     return full[0]
 
 
-def sum_lists(head_1, head_2): # O(n + m + d), O(d)
-    def ll_to_int(head):
+# O(n + m + d), O(d)
+def sum_lists(
+    head_1: LinkedListNode, head_2: LinkedListNode
+) -> LinkedListNode:
+    def ll_to_int(head: LinkedListNode) -> int:
         num = 0
         for i, node in enumerate(head):
             num += node.data * 10**i
         return num
-    
+
     num = ll_to_int(head_1) + ll_to_int(head_2)
-    head = tail = Node(num % 10)
+    head = tail = LinkedListNode(num % 10)
 
     while num // 10 > 0:
         num //= 10
-        tail.next = Node(num % 10)
+        tail.next = LinkedListNode(num % 10)
         tail = tail.next
 
     return head
 
 
-def sum_lists_follow_up(head_1, head_2): # O(n + m + d), O(d)
+# O(n + m + d), O(d)
+def sum_lists_follow_up(
+    head_1: LinkedListNode, head_2: LinkedListNode
+) -> LinkedListNode:
     def ll_to_int(head):
         length = 0
         for _ in head:
             length += 1
-        
+
         num = 0
         for i, node in enumerate(head, 1):
-            num += node.data * 10**(length - i)
+            num += node.data * 10 ** (length - i)
 
         return num
-    
+
     num = str(ll_to_int(head_1) + ll_to_int(head_2))
-    
-    head = tail = Node(int(num[0]))
+
+    head = tail = LinkedListNode(int(num[0]))
     for digit in num[1:]:
-        tail.next = Node(int(digit))
+        tail.next = LinkedListNode(int(digit))
         tail = tail.next
-        
+
     return head
 
 
-def check_palindrome(head): # O(n), O(1)
+# O(n), O(1)
+def check_palindrome(head: LinkedListNode) -> bool:
     length = 0
     for _ in head:
         length += 1
-    
+
     node = head.next
     head.next = None
     i = 1
@@ -205,22 +146,27 @@ def check_palindrome(head): # O(n), O(1)
         if n.data != m.data:
             return False
     return True
-  
 
-def check_intersection(head_1, head_2): # O(n), O(1)
+
+# O(n), O(1)
+def check_intersection(head_1: LinkedListNode, head_2: LinkedListNode) -> bool:
+    # TODO: it only works with lists of the same length. Fix that.
     for n, m in zip(head_1, head_2):
         if n is m:
             return True
     return False
 
 
-def detect_loop(head): # O(n^2), O(1)
+# O(n^2), O(1)
+def detect_loop(head: LinkedListNode) -> LinkedListNode:
     for node in head:
         for checking_node in head:
             if checking_node is node.next:
-                # returning .data to avoid recrusion error provocated by the
-                # __repr__ method
-                return checking_node.data
-            
+                return checking_node
+
             if checking_node is node:
-                break            
+                break
+
+
+# * means that the complexity is not optimal.
+# See the book for more optimal solutions on those problems.
