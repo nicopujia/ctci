@@ -62,15 +62,15 @@ class Queue:
 class StackMin(Stack):
     mins = Stack()
 
-    def push(self, item):
+    def push(self, item: int) -> None:
         super().push(item)
         if self.mins.is_empty() or item < self.mins.peek():
             self.mins.push(item)
 
-    def pop(self):
+    def pop(self) -> None:
         if self.peek() == self.mins.peek():
             self.mins.pop()
         super().pop()
 
-    def min(self):
+    def min(self) -> int:
         return self.mins.peek()
