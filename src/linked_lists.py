@@ -1,4 +1,4 @@
-from typing import Any, Generator, Self
+from typing import Any, Iterator, Self
 
 
 class LinkedListNode:
@@ -9,7 +9,7 @@ class LinkedListNode:
     def __repr__(self) -> str:
         return str(self.data) + (f" → {self.next}" if self.next else "")
 
-    def __iter__(self) -> Generator[Self]:
+    def __iter__(self) -> Iterator[Self]:
         node = self
         yield node
         while node.next:
