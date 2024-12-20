@@ -57,3 +57,20 @@ class Queue:
     def is_empty(self) -> bool:
         """Return true if and only if the queue is empty."""
         return not bool(self.first)
+
+
+class StackMin(Stack):
+    mins = Stack()
+
+    def push(self, item):
+        super().push(item)
+        if self.mins.is_empty() or item < self.mins.peek():
+            self.mins.push(item)
+
+    def pop(self):
+        if self.peek() == self.mins.peek():
+            self.mins.pop()
+        super().pop()
+
+    def min(self):
+        return self.mins.peek()

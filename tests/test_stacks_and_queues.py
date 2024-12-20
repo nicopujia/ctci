@@ -1,6 +1,6 @@
 import pytest
 
-from src.stacks_and_queues import Queue, Stack
+from src.stacks_and_queues import Queue, Stack, StackMin
 
 
 class TestStack:
@@ -81,3 +81,23 @@ class TestQueue:
         assert self.queue.peek() == "c"
         self.queue.remove()
         assert self.queue.is_empty()
+
+
+class TestStackMin(TestStack):
+    def setup_method(self):
+        self.stack = StackMin()
+
+    def test_min_after_pushes_and_pops(self):
+        self.stack.push(5)
+        self.stack.push(7)
+        self.stack.pop()
+        self.stack.push(4)
+        self.stack.push(1)
+        self.stack.pop()
+        self.stack.push(2)
+        self.stack.push(3)
+        self.stack.pop()
+        self.stack.push(6)
+        self.stack.push(8)
+        self.stack.pop()
+        assert self.stack.min() == 2
