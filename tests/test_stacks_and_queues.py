@@ -149,3 +149,8 @@ class TestSetOfStacks:
             if i > 1:
                 assert self.set_of_stacks.peek() == i - 2
         assert self.set_of_stacks.is_empty()
+
+
+class TestMyQueue(TestQueue):
+    def setup_method(self):
+        self.queue = MyQueue()

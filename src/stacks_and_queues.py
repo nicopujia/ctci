@@ -111,3 +111,40 @@ class SetOfStacks:
 
     def is_empty(self) -> bool:
         return len(self.stacks) == 0
+
+
+class MyQueue:
+    def __init__(self):
+        self.push_stack = Stack()
+        self.pop_stack = Stack()
+
+    def is_empty(self) -> bool:
+        return self.push_stack.is_empty() and self.pop_stack.is_empty()
+
+    def add(self, item: Any) -> None:
+        self._reorganize(self.pop_stack, self.push_stack).push(item)
+
+    def remove(self) -> None:
+        self._reorganize(self.push_stack, self.pop_stack).pop()
+        print(self.push_stack, self.pop_stack, sep="\n")
+
+    def peek(self) -> Any:
+        return self._reorganize(self.push_stack, self.pop_stack).peek()
+
+    def _reorganize(self, src: Stack, dst: Stack) -> Stack:
+        """Move all items from `src` to `dst`.
+
+        Args:
+            src (Stack): The stack containing the items.
+            dst (Stack): The empty stack where items will be moved to.
+
+        Returns:
+            Stack:
+                The originally empty stack now filled with all the items in
+                reverse order.
+        """
+        while not src.is_empty():
+            item = src.peek()
+            src.pop()
+            dst.push(item)
+        return dst
