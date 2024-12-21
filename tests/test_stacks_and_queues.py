@@ -1,6 +1,6 @@
 import pytest
 
-from src.stacks_and_queues import Queue, SetOfStacks, Stack, StackMin
+from src.stacks_and_queues import MyQueue, Queue, SetOfStacks, Stack, StackMin
 
 
 class TestStack:
@@ -106,7 +106,6 @@ class TestStackMin(TestStack):
 class TestSetOfStacks:
     def setup_method(self):
         self.set_of_stacks = SetOfStacks()
-        self.set_of_stacks.stacks = []
 
     def test_is_empty_on_empty_set(self):
         assert self.set_of_stacks.is_empty()

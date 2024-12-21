@@ -92,7 +92,9 @@ class SizedStack(Stack):
 
 class SetOfStacks:
     threshold = 5
-    stacks: list[SizedStack] = []
+
+    def __init__(self):
+        self.stacks: list[SizedStack] = []
 
     def push(self, item: Any) -> None:
         if not self.stacks or self.stacks[-1].size >= self.threshold:
