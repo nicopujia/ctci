@@ -19,27 +19,25 @@ class TestStack:
             self.stack.pop()
 
     def test_push_and_peek_with_one_item(self):
-        self.stack.push("a")
+        self.stack.push(1)
         assert not self.stack.is_empty()
-        assert self.stack.peek() == "a"
+        assert self.stack.peek() == 1
 
     def test_push_and_peek_with_multiple_items(self):
-        self.stack.push("a")
-        assert self.stack.peek() == "a"
-        self.stack.push("b")
-        assert self.stack.peek() == "b"
-        self.stack.push("c")
-        assert self.stack.peek() == "c"
+        self.stack.push(1)
+        assert self.stack.peek() == 1
+        self.stack.push(2)
+        assert self.stack.peek() == 2
+        self.stack.push(3)
+        assert self.stack.peek() == 3
 
     def test_pop_items_in_lifo_order(self):
-        self.stack.push("a")
-        self.stack.push("b")
-        self.stack.push("c")
-        self.stack.pop()
-        assert self.stack.peek() == "b"
-        self.stack.pop()
-        assert self.stack.peek() == "a"
-        self.stack.pop()
+        self.stack.push(1)
+        self.stack.push(2)
+        self.stack.push(3)
+        assert self.stack.pop() == 3
+        assert self.stack.pop() == 2
+        assert self.stack.pop() == 1
         assert self.stack.is_empty()
 
 
@@ -59,27 +57,25 @@ class TestQueue:
             self.queue.remove()
 
     def test_add_and_peek_with_one_item(self):
-        self.queue.add("a")
+        self.queue.add(1)
         assert not self.queue.is_empty()
-        assert self.queue.peek() == "a"
+        assert self.queue.peek() == 1
 
     def test_add_and_peek_with_multiple_items(self):
-        self.queue.add("a")
-        assert self.queue.peek() == "a"
-        self.queue.add("b")
-        assert self.queue.peek() == "a"
-        self.queue.add("c")
-        assert self.queue.peek() == "a"
+        self.queue.add(1)
+        assert self.queue.peek() == 1
+        self.queue.add(2)
+        assert self.queue.peek() == 1
+        self.queue.add(3)
+        assert self.queue.peek() == 1
 
     def test_remove_items_in_fifo_order(self):
-        self.queue.add("a")
-        self.queue.add("b")
-        self.queue.add("c")
-        self.queue.remove()
-        assert self.queue.peek() == "b"
-        self.queue.remove()
-        assert self.queue.peek() == "c"
-        self.queue.remove()
+        self.queue.add(1)
+        self.queue.add(2)
+        self.queue.add(3)
+        assert self.queue.remove() == 1
+        assert self.queue.remove() == 2
+        assert self.queue.remove() == 3
         assert self.queue.is_empty()
 
 
@@ -132,11 +128,9 @@ class TestSetOfStacks:
         self.set_of_stacks.push(1)
         self.set_of_stacks.push(2)
         self.set_of_stacks.push(3)
-        self.set_of_stacks.pop()
-        assert self.set_of_stacks.peek() == 2
-        self.set_of_stacks.pop()
-        assert self.set_of_stacks.peek() == 1
-        self.set_of_stacks.pop()
+        assert self.set_of_stacks.pop() == 3
+        assert self.set_of_stacks.pop() == 2
+        assert self.set_of_stacks.pop() == 1
         assert self.set_of_stacks.is_empty()
 
     def test_pop_exceding_threshold_once(self):
@@ -144,9 +138,7 @@ class TestSetOfStacks:
         for i in range(items_count):
             self.set_of_stacks.push(i)
         for i in range(items_count, 0, -1):
-            self.set_of_stacks.pop()
-            if i > 1:
-                assert self.set_of_stacks.peek() == i - 2
+            assert self.set_of_stacks.pop() == i - 1
         assert self.set_of_stacks.is_empty()
 
 

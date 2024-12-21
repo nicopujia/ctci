@@ -1,5 +1,3 @@
-from typing import Any
-
 from .linked_lists import LinkedListNode
 
 
@@ -9,24 +7,22 @@ class Stack:
     def __repr__(self) -> str:
         return self.top.__repr__()
 
-    def push(self, item: Any) -> None:
-        """Add an item to the top of the stack."""
+    def push(self, item: int) -> None:
         self.top = LinkedListNode(item, self.top if self.top else None)
 
-    def pop(self) -> None:
-        """Remove the top item from the stack."""
+    def pop(self) -> int:
         if not self.top:
             raise IndexError
+        old_item = self.top.data
         self.top = self.top.next
+        return old_item
 
-    def peek(self) -> Any:
-        """Return the top of the stack."""
+    def peek(self) -> int:
         if not self.top:
             raise IndexError
         return self.top.data
 
     def is_empty(self) -> bool:
-        """Return true if and only if the stack is empty."""
         return not bool(self.top)
 
 
@@ -34,45 +30,45 @@ class Queue:
     first: LinkedListNode | None = None
     last: LinkedListNode | None = None
 
-    def add(self, item: Any) -> None:
-        """Add an item to the end of the queue."""
+    def add(self, item: int) -> None:
         if self.last:
             self.last.next = LinkedListNode(item)
             self.last = self.last.next
         else:
             self.first = self.last = LinkedListNode(item)
 
-    def remove(self) -> None:
-        """Remove the first item in the queue."""
+    def remove(self) -> int:
         if not self.first:
             raise IndexError
+        old_item = self.first.data
         self.first = self.first.next
         if not self.first:
             self.last = None
+        return old_item
 
-    def peek(self) -> Any:
-        """Return the first of the queue."""
+    def peek(self) -> int:
         if not self.first:
             raise IndexError
         return self.first.data
 
     def is_empty(self) -> bool:
-        """Return true if and only if the queue is empty."""
         return not bool(self.first)
 
 
 class StackMin(Stack):
-    mins = Stack()
+    def __init__(self):
+        super().__init__()
+        self.mins = Stack()
 
     def push(self, item: int) -> None:
         super().push(item)
         if self.mins.is_empty() or item < self.mins.peek():
             self.mins.push(item)
 
-    def pop(self) -> None:
+    def pop(self) -> int:
         if self.peek() == self.mins.peek():
             self.mins.pop()
-        super().pop()
+        return super().pop()
 
     def min(self) -> int:
         return self.mins.peek()
@@ -96,19 +92,20 @@ class SetOfStacks:
     def __init__(self):
         self.stacks: list[SizedStack] = []
 
-    def push(self, item: Any) -> None:
+    def push(self, item: int) -> None:
         if not self.stacks or self.stacks[-1].size >= self.threshold:
             self.stacks.append(SizedStack())
         self.stacks[-1].push(item)
 
-    def pop(self, index: int = -1) -> None:
+    def pop(self, index: int = -1) -> int:
         if not self.stacks:
             raise IndexError
-        self.stacks[index].pop()
+        item = self.stacks[index].pop()
         if not self.stacks[-1].size:
             self.stacks.pop()
+        return item
 
-    def peek(self) -> Any:
+    def peek(self) -> int:
         return self.stacks[-1].peek()
 
     def is_empty(self) -> bool:
@@ -123,14 +120,13 @@ class MyQueue:
     def is_empty(self) -> bool:
         return self.push_stack.is_empty() and self.pop_stack.is_empty()
 
-    def add(self, item: Any) -> None:
+    def add(self, item: int) -> None:
         self._reorganize(self.pop_stack, self.push_stack).push(item)
 
-    def remove(self) -> None:
-        self._reorganize(self.push_stack, self.pop_stack).pop()
-        print(self.push_stack, self.pop_stack, sep="\n")
+    def remove(self) -> int:
+        return self._reorganize(self.push_stack, self.pop_stack).pop()
 
-    def peek(self) -> Any:
+    def peek(self) -> int:
         return self._reorganize(self.push_stack, self.pop_stack).peek()
 
     def _reorganize(self, src: Stack, dst: Stack) -> Stack:
