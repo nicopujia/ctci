@@ -1,6 +1,6 @@
 import pytest
 
-from src.stacks_and_queues import Queue, Stack, StackMin
+from src.stacks_and_queues import Queue, SetOfStacks, Stack, StackMin
 
 
 class TestStack:
@@ -101,3 +101,51 @@ class TestStackMin(TestStack):
         self.stack.push(8)
         self.stack.pop()
         assert self.stack.min() == 2
+
+
+class TestSetOfStacks:
+    def setup_method(self):
+        self.set_of_stacks = SetOfStacks()
+        self.set_of_stacks.stacks = []
+
+    def test_is_empty_on_empty_set(self):
+        assert self.set_of_stacks.is_empty()
+
+    def test_push_and_peek_below_threshold(self):
+        self.set_of_stacks.push(1)
+        assert self.set_of_stacks.peek() == 1
+        self.set_of_stacks.push(2)
+        assert self.set_of_stacks.peek() == 2
+        self.set_of_stacks.push(3)
+        assert self.set_of_stacks.peek() == 3
+
+    def test_push_and_peek_exceding_threshold_once(self):
+        for i in range(int(SetOfStacks.threshold * 1.5)):
+            self.set_of_stacks.push(i)
+            assert self.set_of_stacks.peek() == i
+
+    def test_push_and_peek_exceding_threshold_many_times(self):
+        for i in range(SetOfStacks.threshold * 10):
+            self.set_of_stacks.push(i)
+            assert self.set_of_stacks.peek() == i
+
+    def test_pop_below_threshold(self):
+        self.set_of_stacks.push(1)
+        self.set_of_stacks.push(2)
+        self.set_of_stacks.push(3)
+        self.set_of_stacks.pop()
+        assert self.set_of_stacks.peek() == 2
+        self.set_of_stacks.pop()
+        assert self.set_of_stacks.peek() == 1
+        self.set_of_stacks.pop()
+        assert self.set_of_stacks.is_empty()
+
+    def test_pop_exceding_threshold_once(self):
+        items_count = int(SetOfStacks.threshold * 1.5)
+        for i in range(items_count):
+            self.set_of_stacks.push(i)
+        for i in range(items_count, 0, -1):
+            self.set_of_stacks.pop()
+            if i > 1:
+                assert self.set_of_stacks.peek() == i - 2
+        assert self.set_of_stacks.is_empty()

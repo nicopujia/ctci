@@ -6,6 +6,9 @@ from .linked_lists import LinkedListNode
 class Stack:
     top: LinkedListNode | None = None
 
+    def __repr__(self) -> str:
+        return self.top.__repr__()
+
     def push(self, item: Any) -> None:
         """Add an item to the top of the stack."""
         self.top = LinkedListNode(item, self.top if self.top else None)
@@ -15,7 +18,6 @@ class Stack:
         if not self.top:
             raise IndexError
         self.top = self.top.next
-        print(self.top)
 
     def peek(self) -> Any:
         """Return the top of the stack."""
@@ -74,3 +76,38 @@ class StackMin(Stack):
 
     def min(self) -> int:
         return self.mins.peek()
+
+
+class SizedStack(Stack):
+    size = 0
+
+    def push(self, item):
+        self.size += 1
+        return super().push(item)
+
+    def pop(self):
+        self.size -= 1
+        return super().pop()
+
+
+class SetOfStacks:
+    threshold = 5
+    stacks: list[SizedStack] = []
+
+    def push(self, item: Any) -> None:
+        if not self.stacks or self.stacks[-1].size >= self.threshold:
+            self.stacks.append(SizedStack())
+        self.stacks[-1].push(item)
+
+    def pop(self, index: int = -1) -> None:
+        if not self.stacks:
+            raise IndexError
+        self.stacks[index].pop()
+        if not self.stacks[-1].size:
+            self.stacks.pop()
+
+    def peek(self) -> Any:
+        return self.stacks[-1].peek()
+
+    def is_empty(self) -> bool:
+        return len(self.stacks) == 0
