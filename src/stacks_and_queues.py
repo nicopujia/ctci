@@ -146,3 +146,31 @@ class MyQueue:
             src.pop()
             dst.push(item)
         return dst
+
+
+def sort_stack(stack: SizedStack) -> SizedStack:
+    if stack.size > 1:
+
+        def move(src: Stack, dst: Stack) -> None:
+            dst.push(src.pop())
+
+        helper = Stack()
+        move(stack, helper)
+
+        while not stack.is_empty():
+            if stack.peek() < helper.peek():
+                # Swap top items
+                stack_item = stack.pop()
+                helper_item = helper.pop()
+                stack.push(helper_item)
+                helper.push(stack_item)
+
+                if stack.size == 1:
+                    move(helper, stack)
+            else:
+                move(stack, helper)
+
+        while not helper.is_empty():
+            move(helper, stack)
+
+    return stack

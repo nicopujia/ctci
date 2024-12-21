@@ -1,6 +1,14 @@
 import pytest
 
-from src.stacks_and_queues import MyQueue, Queue, SetOfStacks, Stack, StackMin
+from src.stacks_and_queues import (
+    MyQueue,
+    Queue,
+    SetOfStacks,
+    SizedStack,
+    Stack,
+    StackMin,
+    sort_stack,
+)
 
 
 class TestStack:
@@ -145,3 +153,59 @@ class TestSetOfStacks:
 class TestMyQueue(TestQueue):
     def setup_method(self):
         self.queue = MyQueue()
+
+
+class TestSortStack:
+    def setup_method(self):
+        self.stack = SizedStack()
+
+    def test_sort_empty_stack(self):
+        sorted_stack = sort_stack(self.stack)
+        assert sorted_stack.is_empty()
+
+    def test_sort_single_element_stack(self):
+        self.stack.push(1)
+        sorted_stack = sort_stack(self.stack)
+        assert sorted_stack.peek() == 1
+
+    def test_sort_already_sorted_stack(self):
+        self.stack.push(1)
+        self.stack.push(2)
+        self.stack.push(3)
+        sorted_stack = sort_stack(self.stack)
+        assert sorted_stack.pop() == 1
+        assert sorted_stack.pop() == 2
+        assert sorted_stack.pop() == 3
+        assert sorted_stack.is_empty()
+
+    def test_sort_reverse_sorted_stack(self):
+        self.stack.push(3)
+        self.stack.push(2)
+        self.stack.push(1)
+        sorted_stack = sort_stack(self.stack)
+        assert sorted_stack.pop() == 1
+        assert sorted_stack.pop() == 2
+        assert sorted_stack.pop() == 3
+        assert sorted_stack.is_empty()
+
+    def test_sort_unsorted_stack(self):
+        self.stack.push(3)
+        self.stack.push(1)
+        self.stack.push(2)
+        sorted_stack = sort_stack(self.stack)
+        assert sorted_stack.pop() == 1
+        assert sorted_stack.pop() == 2
+        assert sorted_stack.pop() == 3
+        assert sorted_stack.is_empty()
+
+    def test_sort_stack_with_duplicates(self):
+        self.stack.push(2)
+        self.stack.push(1)
+        self.stack.push(2)
+        self.stack.push(1)
+        sorted_stack = sort_stack(self.stack)
+        assert sorted_stack.pop() == 1
+        assert sorted_stack.pop() == 1
+        assert sorted_stack.pop() == 2
+        assert sorted_stack.pop() == 2
+        assert sorted_stack.is_empty()
