@@ -153,7 +153,3 @@ def detect_loop(head: Node) -> Node:
 
             if checking_node is node:
                 break
-
-
-# * means that the complexity is not optimal.
-# See the book for more optimal solutions on those problems.
