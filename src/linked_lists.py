@@ -119,6 +119,9 @@ def check_palindrome(head: Node) -> bool:
     for _ in head:
         length += 1
 
+    if length == 1:
+        return True
+
     node = head.next
     head.next = None
     i = 1

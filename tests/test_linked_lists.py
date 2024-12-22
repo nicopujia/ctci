@@ -2,6 +2,7 @@ import pytest
 
 from src.linked_lists import (
     Node,
+    check_palindrome,
     delete_middle_node,
     get_kth_to_last,
     partition,
@@ -156,3 +157,25 @@ def test_sum_lists_follow_up():
         ).__repr__()
         == "9 -> 1 -> 2"
     )
+
+
+class TestCheckPalindrome:
+    def test_palindromes_with_even_number_of_nodes(self):
+        assert check_palindrome(Node(1, Node(1)))
+        assert check_palindrome(Node(1, Node(2, Node(2, Node(1)))))
+        assert check_palindrome(Node(2, Node(1, Node(1, Node(2)))))
+        assert check_palindrome(
+            Node(2, Node(1, Node(3, Node(3, Node(1, Node(2))))))
+        )
+
+    def test_palindromes_with_odd_number_of_nodes(self):
+        assert check_palindrome(Node(1))
+        assert check_palindrome(Node(1, Node(2, Node(1))))
+        assert check_palindrome(Node(2, Node(1, Node(2))))
+        assert check_palindrome(Node(3, Node(1, Node(2, Node(1, Node(3))))))
+
+    def test_non_palindromes(self):
+        assert not check_palindrome(Node(1, Node(2)))
+        assert not check_palindrome(Node(1, Node(2, Node(3))))
+        assert not check_palindrome(Node(1, Node(2, Node(1, Node(1)))))
+        assert not check_palindrome(Node(2, Node(2, Node(2, Node(1)))))
