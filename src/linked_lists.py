@@ -16,15 +16,6 @@ class Node:
             node = node.next
             yield node
 
-    def __next__(self) -> Self:
-        return self.next
-
-    def __gt__(self, other: Self) -> bool:
-        return self.data > other.data
-
-    def __lt__(self, other: Self) -> bool:
-        return self.data < other.data
-
 
 # O(n^2), O(1)
 def remove_dups(head: Node) -> Node:
@@ -70,7 +61,7 @@ def delete_middle_node(node: Node) -> None:
 def partition(head: Node, x: int) -> Node:
     left, right = [], []
     for node in head:
-        if node < x:
+        if node.data < x:
             left.append(node)
         else:
             right.append(node)
