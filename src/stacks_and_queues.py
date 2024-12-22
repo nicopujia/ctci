@@ -1,3 +1,6 @@
+from dataclasses import dataclass
+from typing import Type
+
 from .linked_lists import LinkedListNode
 
 
@@ -174,3 +177,67 @@ def sort_stack(stack: SizedStack) -> SizedStack:
             move(helper, stack)
 
     return stack
+
+
+@dataclass
+class Animal:
+    name: str
+
+
+class Cat(Animal):
+    pass
+
+
+class Dog(Animal):
+    pass
+
+
+class AnimalShelter:
+    def __init__(self):
+        self.oldest: LinkedListNode | None = None
+        self.newest: LinkedListNode | None = None
+
+    def enqueue(self, animal: Animal) -> None:
+        if self.newest:
+            self.newest.next = LinkedListNode(animal)
+            self.newest = self.newest.next
+        else:
+            self.oldest = self.newest = LinkedListNode(animal)
+
+    def dequeue_any(self) -> Animal:
+        if not self.oldest:
+            raise IndexError
+        oldest_animal = self.oldest.data
+        self.oldest = self.oldest.next
+        if not self.oldest:
+            self.newest = None
+        return oldest_animal
+
+    def dequeue_dog(self) -> Dog:
+        return self._dequeue_specific(Dog)
+
+    def dequeue_cat(self) -> Cat:
+        return self._dequeue_specific(Cat)
+
+    def _dequeue_specific(self, animal_type: Type) -> Animal:
+        if not self.oldest:
+            raise IndexError
+
+        if isinstance(self.oldest.data, animal_type):
+            return self.dequeue_any()
+
+        previous = self.oldest
+        node = self.oldest.next
+        while node and not isinstance(node.data, animal_type):
+            previous = previous.next
+            node = node.next
+
+        if not node:
+            raise IndexError()
+
+        previous.next = node.next
+
+        if node is self.newest:
+            self.first = previous
+
+        return node.data

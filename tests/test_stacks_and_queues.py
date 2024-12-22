@@ -1,6 +1,9 @@
 import pytest
 
 from src.stacks_and_queues import (
+    AnimalShelter,
+    Cat,
+    Dog,
     MyQueue,
     Queue,
     SetOfStacks,
@@ -209,3 +212,70 @@ class TestSortStack:
         assert sorted_stack.pop() == 2
         assert sorted_stack.pop() == 2
         assert sorted_stack.is_empty()
+
+
+class TestAnimalShelter:
+    def setup_method(self):
+        self.shelter = AnimalShelter()
+
+    def test_dequeue_any_from_empty_shelter(self):
+        with pytest.raises(IndexError):
+            self.shelter.dequeue_any()
+
+    def test_dequeue_dog_from_empty_shelter(self):
+        with pytest.raises(IndexError):
+            self.shelter.dequeue_dog()
+
+    def test_dequeue_cat_from_empty_shelter(self):
+        with pytest.raises(IndexError):
+            self.shelter.dequeue_cat()
+
+    def test_enqueue_and_dequeue_dogs(self):
+        self.shelter.enqueue(Dog("Firulais"))
+        self.shelter.enqueue(Dog("Rocky"))
+        self.shelter.enqueue(Dog("Boxer"))
+        assert self.shelter.dequeue_dog().name == "Firulais"
+        assert self.shelter.dequeue_dog().name == "Rocky"
+        assert self.shelter.dequeue_dog().name == "Boxer"
+
+    def test_enqueue_and_dequeue_cats(self):
+        self.shelter.enqueue(Cat("Maia"))
+        self.shelter.enqueue(Cat("Mauricio"))
+        self.shelter.enqueue(Cat("Enrique"))
+        assert self.shelter.dequeue_cat().name == "Maia"
+        assert self.shelter.dequeue_cat().name == "Mauricio"
+        assert self.shelter.dequeue_cat().name == "Enrique"
+
+    def test_enqueue_and_dequeue_any(self):
+        self.shelter.enqueue(Dog("Firulais"))
+        self.shelter.enqueue(Cat("Maia"))
+        self.shelter.enqueue(Cat("Mauricio"))
+        self.shelter.enqueue(Dog("Rocky"))
+        self.shelter.enqueue(Dog("Boxer"))
+        self.shelter.enqueue(Cat("Enrique"))
+        assert self.shelter.dequeue_any().name == "Firulais"
+        assert self.shelter.dequeue_any().name == "Maia"
+        assert self.shelter.dequeue_any().name == "Mauricio"
+        assert self.shelter.dequeue_any().name == "Rocky"
+        assert self.shelter.dequeue_any().name == "Boxer"
+        assert self.shelter.dequeue_any().name == "Enrique"
+
+    def test_enqueue_cat_and_dequeue_dog(self):
+        self.shelter.enqueue(Cat("Johnny"))
+        with pytest.raises(IndexError):
+            self.shelter.dequeue_dog()
+
+    def test_enqueue_dog_and_dequeue_cat(self):
+        self.shelter.enqueue(Dog("George"))
+        with pytest.raises(IndexError):
+            self.shelter.dequeue_cat()
+
+    def test_enqueue_all_and_dequeue_cat(self):
+        self.shelter.enqueue(Dog("George"))
+        self.shelter.enqueue(Cat("Johnny"))
+        assert self.shelter.dequeue_cat().name == "Johnny"
+
+    def test_enqueue_all_and_dequeue_dog(self):
+        self.shelter.enqueue(Cat("Johnny"))
+        self.shelter.enqueue(Dog("George"))
+        assert self.shelter.dequeue_dog().name == "George"
