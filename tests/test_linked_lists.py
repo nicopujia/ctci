@@ -4,6 +4,7 @@ from src.linked_lists import (
     Node,
     delete_middle_node,
     get_kth_to_last,
+    partition,
     remove_dups,
 )
 
@@ -119,3 +120,17 @@ class TestDeleteMiddleNode:
     def test_delete_last_node(self):
         delete_middle_node(self.head.next.next)
         assert self.head.__repr__() == "1 -> 2 -> 3"
+
+
+def test_partition():
+    head = Node(3, Node(5, Node(8, Node(5, Node(10, Node(2, Node(1)))))))
+    x = 5
+    reached_partition = False
+    for node in partition(head, x):
+        if node.data >= x:
+            reached_partition = True
+
+        if reached_partition:
+            assert node.data >= x
+        else:
+            assert node.data < x
