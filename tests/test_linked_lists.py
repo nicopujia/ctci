@@ -6,6 +6,8 @@ from src.linked_lists import (
     get_kth_to_last,
     partition,
     remove_dups,
+    sum_lists,
+    sum_lists_follow_up,
 )
 
 
@@ -134,3 +136,23 @@ def test_partition():
             assert node.data >= x
         else:
             assert node.data < x
+
+
+def test_sum_lists():
+    assert (
+        sum_lists(
+            Node(7, Node(1, Node(6))),
+            Node(5, Node(9, Node(2))),
+        ).__repr__()
+        == "2 -> 1 -> 9"
+    )
+
+
+def test_sum_lists_follow_up():
+    assert (
+        sum_lists_follow_up(
+            Node(6, Node(1, Node(7))),
+            Node(2, Node(9, Node(5))),
+        ).__repr__()
+        == "9 -> 1 -> 2"
+    )
