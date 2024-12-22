@@ -20,16 +20,15 @@ class Node:
 
 # O(n^2), O(1)
 def remove_dups(head: Node) -> Node:
-    # TODO: doesn't remove last element
     for node in head:
         if not node.next:
             break
-        for following_node in node:
-            if not following_node.next:
-                break
-            is_duplicate = node.data == following_node.next.data
-            if is_duplicate:
-                following_node.next = following_node.next.next
+        following_node_previous = node
+        for following_node in node.next:
+            if following_node.data == node.data:
+                following_node_previous.next = following_node.next
+            else:
+                following_node_previous = following_node_previous.next
     return head
 
 
