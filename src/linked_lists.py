@@ -17,6 +17,12 @@ class Node:
             node = node.next
             yield node
 
+    def get_length(self):
+        length = 0
+        for _ in self:
+            length += 1
+        return length
+
 
 # O(n^2), O(1)
 def remove_dups(head: Node) -> Node:
@@ -34,9 +40,7 @@ def remove_dups(head: Node) -> Node:
 
 # O(n), O(1)
 def get_kth_to_last(head: Node, k: int) -> Node:
-    length = 0
-    for _ in head:
-        length += 1
+    length = head.get_length()
 
     for i, node in enumerate(head, 1):
         if length - i == k:
@@ -92,10 +96,8 @@ def sum_lists(head_1: Node, head_2: Node) -> Node:
 
 # O(n + m + d), O(d)
 def sum_lists_follow_up(head_1: Node, head_2: Node) -> Node:
-    def ll_to_int(head):
-        length = 0
-        for _ in head:
-            length += 1
+    def ll_to_int(head: Node):
+        length = head.get_length()
 
         num = 0
         for i, node in enumerate(head, 1):
@@ -115,9 +117,7 @@ def sum_lists_follow_up(head_1: Node, head_2: Node) -> Node:
 
 # O(n), O(1)
 def check_palindrome(head: Node) -> bool:
-    length = 0
-    for _ in head:
-        length += 1
+    length = head.get_length()
 
     if length == 1:
         return True
@@ -140,10 +140,21 @@ def check_palindrome(head: Node) -> bool:
 
 # O(n), O(1)
 def check_intersection(head_1: Node, head_2: Node) -> bool:
-    # TODO: it only works with lists of the same length. Fix that.
+    length_1 = head_1.get_length()
+    length_2 = head_2.get_length()
+    longer_head = head_1 if length_1 > length_2 else head_2
+    longer_length = length_1 if length_1 > length_2 else length_2
+    shorter_length = length_1 if length_1 <= length_2 else length_2
+    length_difference = longer_length - shorter_length
+
+    while length_difference:
+        length_difference -= 1
+        longer_head.next = longer_head.next.next
+
     for n, m in zip(head_1, head_2):
-        if n is m:
+        if n.next is m.next and n.next is not None:
             return True
+
     return False
 
 

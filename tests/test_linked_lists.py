@@ -2,6 +2,7 @@ import pytest
 
 from src.linked_lists import (
     Node,
+    check_intersection,
     check_palindrome,
     delete_middle_node,
     get_kth_to_last,
@@ -179,3 +180,37 @@ class TestCheckPalindrome:
         assert not check_palindrome(Node(1, Node(2, Node(3))))
         assert not check_palindrome(Node(1, Node(2, Node(1, Node(1)))))
         assert not check_palindrome(Node(2, Node(2, Node(2, Node(1)))))
+
+
+class TestCheckIntersection:
+    def setup_method(self):
+        self.intersecting_node = Node(3)
+
+    def test_with_non_intersecting_lists(self):
+        assert not check_intersection(
+            self.intersecting_node, self.intersecting_node
+        )
+        assert not check_intersection(Node(1), Node(1))
+        assert not check_intersection(Node(1, Node(2)), Node(1))
+        assert not check_intersection(Node(1, Node(2)), Node(1, Node(2)))
+        assert not check_intersection(Node(1, Node(2)), Node(2, Node(1)))
+
+    def test_with_intersecting_lists_of_same_length(self):
+        assert check_intersection(
+            Node(1, Node(2, self.intersecting_node)),
+            Node(5, Node(4, self.intersecting_node)),
+        )
+        assert check_intersection(
+            Node(2, self.intersecting_node),
+            Node(4, self.intersecting_node),
+        )
+
+    def test_with_intersecting_lists_of_different_length(self):
+        assert check_intersection(
+            Node(1, Node(2, self.intersecting_node)),
+            Node(4, self.intersecting_node),
+        )
+        assert check_intersection(
+            Node(2, self.intersecting_node),
+            Node(6, Node(5, Node(4, self.intersecting_node))),
+        )
