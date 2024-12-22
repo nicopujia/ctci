@@ -5,6 +5,7 @@ from src.linked_lists import (
     check_intersection,
     check_palindrome,
     delete_middle_node,
+    detect_loop,
     get_kth_to_last,
     partition,
     remove_dups,
@@ -214,3 +215,11 @@ class TestCheckIntersection:
             Node(2, self.intersecting_node),
             Node(6, Node(5, Node(4, self.intersecting_node))),
         )
+
+
+def test_detect_loop():
+    tail = Node(5)
+    head = Node(1, Node(2, Node(3, Node(4, tail))))
+    loop_starting_node = head.next.next
+    tail.next = loop_starting_node
+    assert detect_loop(head) is loop_starting_node
