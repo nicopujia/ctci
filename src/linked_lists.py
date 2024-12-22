@@ -1,10 +1,11 @@
-from typing import Any, Iterator, Self
+from dataclasses import dataclass
+from typing import Iterator, Self
 
 
+@dataclass
 class Node:
-    def __init__(self, data: Any, next: Self | None = None) -> None:
-        self.data = data
-        self.next = next
+    data: int
+    next: Self | None = None
 
     def __repr__(self) -> str:
         return str(self.data) + (f" -> {self.next}" if self.next else "")
