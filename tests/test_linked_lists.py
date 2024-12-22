@@ -1,4 +1,4 @@
-from src.linked_lists import Node
+from src.linked_lists import Node, remove_dups
 
 
 class TestNode:
@@ -38,3 +38,29 @@ class TestNode:
         assert self.head.next.next.__repr__() == "3 -> 1 -> 5"
         assert self.head.next.next.next.__repr__() == "1 -> 5"
         assert self.head.next.next.next.next.__repr__() == "5"
+
+
+class TestRemoveDups:
+    def test_single_node(self):
+        head = Node(1)
+        assert remove_dups(head).__repr__() == "1"
+
+    def test_no_dups(self):
+        head = Node(1, Node(2, Node(3)))
+        assert remove_dups(head).__repr__() == "1 -> 2 -> 3"
+
+    def test_same_value_always(self):
+        head = Node(1, Node(1, Node(1)))
+        assert remove_dups(head).__repr__() == "1"
+
+    def test_consecutive_dups(self):
+        head = Node(1, Node(1, Node(2, Node(2))))
+        assert remove_dups(head).__repr__() == "1 -> 2"
+
+    def test_non_consecutive_dups(self):
+        head = Node(1, Node(2, Node(1, Node(2))))
+        assert remove_dups(head).__repr__() == "1 -> 2"
+
+    def test_long_linked_list_with_dups(self):
+        head = Node(1, Node(2, Node(3, Node(1, Node(1, Node(4, Node(3)))))))
+        assert remove_dups(head).__repr__() == "1 -> 2 -> 3 -> 4"
