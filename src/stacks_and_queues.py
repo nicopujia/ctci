@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Type
 
-from .linked_lists import LinkedListNode
+from .linked_lists import Node as LinkedListNode
 
 
 class Stack:
