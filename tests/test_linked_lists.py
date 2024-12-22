@@ -1,6 +1,11 @@
 import pytest
 
-from src.linked_lists import Node, get_kth_to_last, remove_dups
+from src.linked_lists import (
+    Node,
+    delete_middle_node,
+    get_kth_to_last,
+    remove_dups,
+)
 
 
 class TestNode:
@@ -97,3 +102,20 @@ class TestGetKthToLast:
     def test_single_node_with_k_exceding_length(self):
         with pytest.raises(IndexError):
             get_kth_to_last(self.node, 2)
+
+
+class TestDeleteMiddleNode:
+    def setup_method(self):
+        self.head = Node(1, Node(2, Node(3)))
+
+    def test_delete_first_node(self):
+        delete_middle_node(self.head)
+        assert self.head.__repr__() == "2 -> 3"
+
+    def test_delete_second_node(self):
+        delete_middle_node(self.head.next)
+        assert self.head.__repr__() == "1 -> 3"
+
+    def test_delete_last_node(self):
+        delete_middle_node(self.head.next.next)
+        assert self.head.__repr__() == "1 -> 2 -> 3"

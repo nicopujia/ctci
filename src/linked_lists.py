@@ -50,7 +50,7 @@ def delete_middle_node(node: Node) -> None:
     if node.next:
         node.data = node.next.data
         if node.next.next:
-            node.next.delete()
+            node.next = node.next.next
         else:
             node.next = None
     else:
