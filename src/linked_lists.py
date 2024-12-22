@@ -7,7 +7,7 @@ class Node:
         self.next = next
 
     def __repr__(self) -> str:
-        return str(self.data) + (f" → {self.next}" if self.next else "")
+        return str(self.data) + (f" -> {self.next}" if self.next else "")
 
     def __iter__(self) -> Iterator[Self]:
         node = self
