@@ -38,7 +38,7 @@ def get_kth_to_last(head: Node, k: int) -> Node:
     for _ in head:
         length += 1
 
-    for i, node in enumerate(head):
+    for i, node in enumerate(head, 1):
         if length - i == k:
             return node
 

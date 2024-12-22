@@ -1,4 +1,6 @@
-from src.linked_lists import Node, remove_dups
+import pytest
+
+from src.linked_lists import Node, get_kth_to_last, remove_dups
 
 
 class TestNode:
@@ -64,3 +66,34 @@ class TestRemoveDups:
     def test_long_linked_list_with_dups(self):
         head = Node(1, Node(2, Node(3, Node(1, Node(1, Node(4, Node(3)))))))
         assert remove_dups(head).__repr__() == "1 -> 2 -> 3 -> 4"
+
+
+class TestGetKthToLast:
+    def setup_method(self):
+        self.head = Node(44, Node(22, Node(33, Node(11, Node(55)))))
+        self.node = Node(1)
+
+    def test_with_k_below_length(self):
+        assert get_kth_to_last(self.head, 2).data == 33
+
+    def test_with_k_equals_zero(self):
+        assert get_kth_to_last(self.head, 0).data == 55
+
+    def test_with_k_equals_length(self):
+        with pytest.raises(IndexError):
+            get_kth_to_last(self.head, 5)
+
+    def test_with_k_exceeding_length(self):
+        with pytest.raises(IndexError):
+            get_kth_to_last(self.head, 6)
+
+    def test_single_node_with_k_equals_zero(self):
+        assert get_kth_to_last(self.node, 0).data == 1
+
+    def test_single_node_with_k_equals_length(self):
+        with pytest.raises(IndexError):
+            get_kth_to_last(self.node, 1)
+
+    def test_single_node_with_k_exceding_length(self):
+        with pytest.raises(IndexError):
+            get_kth_to_last(self.node, 2)
