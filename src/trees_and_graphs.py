@@ -33,10 +33,6 @@ class Graph:
     def __repr__(self) -> str:
         return f"Graph({len(self._nodes)} nodes)"
 
-    def __iter__(self):
-        for node in self._nodes:
-            yield node
-
     def __in__(self, node: Node):
         return node in self._nodes
 
