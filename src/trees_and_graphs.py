@@ -40,6 +40,10 @@ class Graph:
     def __in__(self, node: Node):
         return node in self._nodes
 
+    @property
+    def nodes(self):
+        return self._nodes.copy()
+
     def add(self, node: Node) -> None:
         self._nodes.add(node)
 
