@@ -4,7 +4,7 @@ from typing import Iterable
 class Node:
     def __init__(self, data):
         self.data = data
-        self._neighbors = set()
+        self._neighbors: set["Node"] = set()
 
     def __repr__(self) -> str:
         return f"{self.data} -> " + ", ".join(
