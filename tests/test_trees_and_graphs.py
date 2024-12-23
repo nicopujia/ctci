@@ -133,15 +133,15 @@ class TestGraphAndNode:
 
     def test_remove_node_without_connections(self):
         self.g.remove(self.n[0])
-        assert self.n[0] not in self.g
+        assert self.n[0] not in self.g.nodes
 
     def test_remove_node_with_connections(self):
         for i in range(2):
             self.g.connect(self.n[i], self.n[i + 1])
         self.g.remove(self.n[1])
-        assert self.n[0] in self.g
-        assert self.n[1] not in self.g
-        assert self.n[2] in self.g
+        assert self.n[0] in self.g.nodes
+        assert self.n[1] not in self.g.nodes
+        assert self.n[2] in self.g.nodes
         for i in range(3):
             assert not self.n[i].neighbors
 
@@ -152,9 +152,9 @@ class TestGraphAndNode:
         g2.connect(self.n[1], g2_node, both_ways=True)
         # At this point we have two graphs like this: [n0 <-> (n1] <-> g2_node)
         self.g.remove(self.n[1])
-        assert g2_node in g2
-        assert self.n[1] in g2
-        assert self.n[1] not in self.g
-        assert self.n[0] in self.g
+        assert g2_node in g2.nodes
+        assert self.n[1] in g2.nodes
+        assert self.n[1] not in self.g.nodes
+        assert self.n[0] in self.g.nodes
         assert g2.are_connected(self.n[1], g2_node, both_ways=True)
         assert not self.g.are_connected(self.n[0], self.n[1])

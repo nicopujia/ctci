@@ -33,9 +33,6 @@ class Graph:
     def __repr__(self) -> str:
         return f"Graph({len(self._nodes)} nodes)"
 
-    def __in__(self, node: Node):
-        return node in self._nodes
-
     @property
     def nodes(self):
         return self._nodes.copy()
