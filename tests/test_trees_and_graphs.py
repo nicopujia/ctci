@@ -1,7 +1,7 @@
 from src.trees_and_graphs import Graph, Node
 
 
-class TestGraph:
+class TestGraphAndNode:
     def setup_method(self):
         self.n = [Node(i) for i in range(5)]
         self.g = Graph(self.n)
