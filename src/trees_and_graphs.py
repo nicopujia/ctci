@@ -37,8 +37,8 @@ class Graph:
     def nodes(self):
         return self._nodes.copy()
 
-    def add(self, node: Node) -> None:
-        self._nodes.add(node)
+    def add(self, *nodes: Node) -> None:
+        self._nodes.update(nodes)
 
     def remove(self, node: Node) -> None:
         self._nodes.discard(node)
