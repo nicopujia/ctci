@@ -18,7 +18,7 @@ class TestGraphAndNode:
         self.g.connect(self.n[0], self.n[0])
         assert self.g.are_connected(self.n[0], self.n[0])
 
-    def test_connect_one_to_another_in_single_direction(self):
+    def test_connect_one_to_another_in_one_way(self):
         self.g.connect(self.n[0], self.n[1])
         assert self.n[0].points_to(self.n[1])
         assert not self.n[1].points_to(self.n[0])
@@ -28,7 +28,7 @@ class TestGraphAndNode:
         self.g.connect(self.n[0], self.n[1])
         assert len(self.n[0].neighbors) == 1
 
-    def test_connect_one_to_another_in_both_directions(self):
+    def test_connect_one_to_another_in_both_ways(self):
         self.g.connect(self.n[0], self.n[1], both_ways=True)
         assert self.g.are_connected(self.n[0], self.n[1], both_ways=True)
 
@@ -39,7 +39,7 @@ class TestGraphAndNode:
             assert self.n[0].points_to(self.n[i])
             assert not self.n[i].points_to(self.n[0])
 
-    def test_connect_one_to_many_in_both_directions(self):
+    def test_connect_one_to_many_in_both_ways(self):
         for i in range(1, 5):
             self.g.connect(self.n[0], self.n[i], both_ways=True)
         for i in range(1, 5):
@@ -61,7 +61,7 @@ class TestGraphAndNode:
             assert self.n[i].points_to(self.n[0])
             assert not self.n[0].points_to(self.n[i])
 
-    def test_connect_many_in_single_direction_with_cycle(self):
+    def test_connect_many_in_one_way_with_cycle(self):
         for i in range(4):
             self.g.connect(self.n[i], self.n[i + 1])
         self.g.connect(self.n[4], self.n[0])
@@ -69,14 +69,14 @@ class TestGraphAndNode:
             assert self.n[i].points_to(self.n[i + 1])
         assert self.n[4].points_to(self.n[0])
 
-    def test_connect_many_in_single_direction_without_cycle(self):
+    def test_connect_many_in_one_way_without_cycle(self):
         for i in range(4):
             self.g.connect(self.n[i], self.n[i + 1])
         for i in range(4):
             assert self.n[i].points_to(self.n[i + 1])
         assert not self.n[4].points_to(self.n[0])
 
-    def test_connect_many_in_both_directions_with_cycle(self):
+    def test_connect_many_in_both_ways_with_cycle(self):
         for i in range(4):
             self.g.connect(self.n[i], self.n[i + 1], both_ways=True)
         self.g.connect(self.n[4], self.n[0], both_ways=True)
@@ -86,7 +86,7 @@ class TestGraphAndNode:
             )
         assert self.g.are_connected(self.n[4], self.n[0], both_ways=True)
 
-    def test_connect_many_in_both_directions_without_cycle(self):
+    def test_connect_many_in_both_ways_without_cycle(self):
         for i in range(4):
             self.g.connect(self.n[i], self.n[i + 1], both_ways=True)
         for i in range(4):
@@ -96,7 +96,7 @@ class TestGraphAndNode:
         assert not self.g.are_connected(self.n[4], self.n[0])
         assert not self.g.are_connected(self.n[0], self.n[4])
 
-    def test_connect_many_to_many_in_both_directions(self):
+    def test_connect_many_to_many_in_both_ways(self):
         for i in range(5):
             for j in range(5):
                 if i != j:
@@ -115,7 +115,7 @@ class TestGraphAndNode:
         self.g.disconnect(self.n[0], self.n[1], both_ways=True)
         assert not self.g.are_connected(self.n[0], self.n[1])
 
-    def test_disconnect_connected_nodes_in_single_direction(self):
+    def test_disconnect_connected_nodes_in_one_way(self):
         self.g.connect(self.n[0], self.n[1])
         assert self.g.are_connected(self.n[0], self.n[1])
         self.g.disconnect(self.n[1], self.n[0])
@@ -123,7 +123,7 @@ class TestGraphAndNode:
         self.g.disconnect(self.n[0], self.n[1])
         assert not self.g.are_connected(self.n[0], self.n[1])
 
-    def test_disconnect_connected_nodes_in_both_directions(self):
+    def test_disconnect_connected_nodes_in_both_ways(self):
         self.g.connect(self.n[0], self.n[1], both_ways=True)
         self.g.disconnect(self.n[1], self.n[0], both_ways=True)
         assert not self.g.are_connected(self.n[0], self.n[1])
