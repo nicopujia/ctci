@@ -7,9 +7,10 @@ class Node:
         self._neighbors: set["Node"] = set()
 
     def __repr__(self) -> str:
-        return f"{self.data} -> " + ", ".join(
-            neighbor.data for neighbor in self._neighbors
+        neighbors = ", ".join(
+            str(neighbor.data) for neighbor in self._neighbors
         )
+        return str(self.data) + (f" -> {neighbors}" if neighbors else "")
 
     @property
     def neighbors(self):
@@ -31,7 +32,9 @@ class Graph:
         self._nodes = set(nodes)
 
     def __repr__(self) -> str:
-        return f"Graph({len(self._nodes)} nodes)"
+        nodes_count = len(self._nodes)
+        nodes_plural = "s" if len(self._nodes) != 1 else ""
+        return f"Graph({nodes_count} node{nodes_plural})"
 
     @property
     def nodes(self):
