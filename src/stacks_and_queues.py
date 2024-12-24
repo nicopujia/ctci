@@ -237,7 +237,4 @@ class AnimalShelter:
 
         previous.next = node.next
 
-        if node is self.newest:
-            self.first = previous
-
         return node.data

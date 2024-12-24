@@ -217,9 +217,19 @@ class TestCheckIntersection:
         )
 
 
-def test_detect_loop():
-    tail = Node(5)
-    head = Node(1, Node(2, Node(3, Node(4, tail))))
-    loop_starting_node = head.next.next
-    tail.next = loop_starting_node
-    assert detect_loop(head) is loop_starting_node
+class TestDetectLoop:
+    def test_with_one_node_loop(self):
+        node = Node(1)
+        node.next = node
+        assert detect_loop(node) is node
+
+    def test_with_multiple_nodes_loop(self):
+        tail = Node(5)
+        head = Node(1, Node(2, Node(3, Node(4, tail))))
+        loop_starting_node = head.next.next
+        tail.next = loop_starting_node
+        assert detect_loop(head) is loop_starting_node
+
+    def test_without_loop(self):
+        head = Node(1, Node(2, Node(3, Node(4))))
+        assert detect_loop(head) is None

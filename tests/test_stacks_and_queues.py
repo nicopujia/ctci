@@ -51,6 +51,15 @@ class TestStack:
         assert self.stack.pop() == 1
         assert self.stack.is_empty()
 
+    def test_repr_with_items(self):
+        self.stack.push(1)
+        self.stack.push(2)
+        self.stack.push(3)
+        assert self.stack.__repr__() == "3 -> 2 -> 1"
+
+    def test_repr_without_items(self):
+        assert self.stack.__repr__() == "None"
+
 
 class TestQueue:
     def setup_method(self):
@@ -151,6 +160,10 @@ class TestSetOfStacks:
         for i in range(items_count, 0, -1):
             assert self.set_of_stacks.pop() == i - 1
         assert self.set_of_stacks.is_empty()
+
+    def test_pop_without_items(self):
+        with pytest.raises(IndexError):
+            self.set_of_stacks.pop()
 
 
 class TestMyQueue(TestQueue):
@@ -260,13 +273,15 @@ class TestAnimalShelter:
         assert self.shelter.dequeue_any().name == "Boxer"
         assert self.shelter.dequeue_any().name == "Enrique"
 
-    def test_enqueue_cat_and_dequeue_dog(self):
+    def test_enqueue_cats_and_dequeue_dog(self):
         self.shelter.enqueue(Cat("Johnny"))
+        self.shelter.enqueue(Cat("John"))
         with pytest.raises(IndexError):
             self.shelter.dequeue_dog()
 
-    def test_enqueue_dog_and_dequeue_cat(self):
+    def test_enqueue_dogs_and_dequeue_cat(self):
         self.shelter.enqueue(Dog("George"))
+        self.shelter.enqueue(Dog("Bob"))
         with pytest.raises(IndexError):
             self.shelter.dequeue_cat()
 

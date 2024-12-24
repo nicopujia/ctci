@@ -161,7 +161,7 @@ def check_intersection(head_1: Node, head_2: Node) -> bool:
 # O(n^2), O(1)
 def detect_loop(head: Node) -> Node:
     for node in head:
-        for checking_node in head:
+        for checking_node in head:  # pragma: no branch
             if checking_node is node.next:
                 return checking_node
 
