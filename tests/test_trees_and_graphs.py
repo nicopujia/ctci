@@ -196,3 +196,92 @@ class TestGraphAndNode:
         # Because sets are unordered data structures, the neighbors may appear
         # in different order in different runs.
         assert str(self.n[0]) in ("0 -> {1, 2}", "0 -> {2, 1}")
+
+
+class TestCheckRouteBetweenNodes:
+    def setup_method(self):
+        self.g = Graph()
+
+    def test_one_node(self):
+        n = Node(1)
+        self.g.add(n)
+        assert not self.g.check_route_between_nodes(n, n)
+
+    def test_one_node_connected_to_itself(self):
+        n = Node(1)
+        self.g.add(n)
+        self.g.connect(n, n)
+        assert self.g.check_route_between_nodes(n, n)
+
+    def test_two_nodes_connected_in_one_way(self):
+        a, b = Node("a"), Node("b")
+        self.g.add(a, b)
+        self.g.connect(a, b)
+        assert self.g.check_route_between_nodes(a, b)
+
+    def test_two_nodes_connected_in_the_other_way(self):
+        a, b = Node("a"), Node("b")
+        self.g.add(a, b)
+        self.g.connect(b, a)
+        assert not self.g.check_route_between_nodes(a, b)
+
+    def test_two_nodes_connected_in_both_ways(self):
+        a, b = Node("a"), Node("b")
+        self.g.add(a, b)
+        self.g.connect(a, b, both_ways=True)
+        assert self.g.check_route_between_nodes(a, b)
+
+    def test_two_disconnected_nodes(self):
+        a, b = Node("a"), Node("b")
+        self.g.add(a, b)
+        assert not self.g.check_route_between_nodes(a, b)
+
+    def test_three_nodes_connected_in_one_way(self):
+        a, middle, b = Node("a"), Node(1), Node("b")
+        self.g.add(a, middle, b)
+        self.g.connect(a, middle)
+        self.g.connect(middle, b)
+        assert self.g.check_route_between_nodes(a, b)
+
+    def test_three_nodes_with_end_nodes_pointing_to_middle_node(self):
+        a, middle, b = Node("a"), Node(1), Node("b")
+        self.g.add(a, middle, b)
+        self.g.connect(a, middle)
+        self.g.connect(b, middle)
+        assert not self.g.check_route_between_nodes(a, b)
+
+    def test_multiple_routes_with_only_one_correct(self):
+        a, b = Node("a"), Node("b")
+        wrong, wrong_2 = Node(10), Node(20)
+        correct, correct_2, correct_3 = Node(1), Node(2), Node(3)
+        self.g.add(a, wrong, wrong_2, correct, correct_2, correct_3, b)
+        self.g.connect(a, wrong)
+        self.g.connect(wrong, wrong_2)
+        self.g.connect(a, correct)
+        self.g.connect(correct, correct_2)
+        self.g.connect(correct_2, correct_3)
+        self.g.connect(correct_3, b)
+        assert self.g.check_route_between_nodes(a, b)
+
+    def test_multiple_nodes_in_between(self):
+        nodes = [Node(i) for i in range(10)]
+        self.g.add(*nodes)
+        for i in range(len(nodes) - 1):
+            self.g.connect(nodes[i], nodes[i + 1], both_ways=True)
+        assert self.g.check_route_between_nodes(nodes[0], nodes[-1])
+
+    def test_loop_with_correct_path(self):
+        a, b, c = Node("a"), Node("b"), Node("c")
+        self.g.add(a, b, c)
+        self.g.connect(a, b)
+        self.g.connect(b, c)
+        self.g.connect(c, a)
+        assert self.g.check_route_between_nodes(a, c)
+
+    def test_loop_without_correct_route(self):
+        a, loop_1, loop_2, b = Node("a"), Node(1), Node(2), Node("b")
+        self.g.add(a, loop_1, loop_2, b)
+        self.g.connect(a, loop_1)
+        self.g.connect(loop_1, loop_2)
+        self.g.connect(loop_2, a)
+        assert not self.g.check_route_between_nodes(a, b)
