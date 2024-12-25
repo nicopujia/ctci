@@ -160,30 +160,39 @@ class TestGraphAndNode:
         assert not self.g.are_connected(self.n[0], self.n[1])
 
     def test_graph_repr_with_nodes(self):
-        assert self.g.__repr__() == "Graph(5 nodes)"
+        assert repr(self.g) == "Graph(5 nodes)"
 
     def test_graph_repr_without_nodes(self):
-        assert Graph().__repr__() == "Graph(0 nodes)"
+        assert repr(Graph()) == "Graph(0 nodes)"
 
     def test_graph_repr_with_one_node(self):
         g = Graph()
         g.add(Node(10))
-        assert g.__repr__() == "Graph(1 node)"
+        assert repr(g) == "Graph(1 node)"
 
-    def test_node_repr_without_connections(self):
-        assert self.n[0].__repr__() == "0"
+    def test_node_repr_with_number(self):
+        assert repr(self.n[0]) == "Node(0)"
 
-    def test_node_repr_with_connection_by_other(self):
+    def test_node_repr_with_non_empty_string(self):
+        assert repr(Node("hello world")) == "Node('hello world')"
+
+    def test_node_repr_with_empty_string(self):
+        assert repr(Node("")) == "Node('')"
+
+    def test_node_str_without_connections(self):
+        assert str(self.n[0]) == "0"
+
+    def test_node_str_with_connection_by_other(self):
         self.g.connect(self.n[1], self.n[0])
-        assert self.n[0].__repr__() == "0"
+        assert str(self.n[0]) == "0"
 
-    def test_node_repr_with_one_neighbor(self):
+    def test_node_str_with_one_neighbor(self):
         self.g.connect(self.n[0], self.n[1])
-        assert self.n[0].__repr__() == "0 -> 1"
+        assert str(self.n[0]) == "0 -> {1}"
 
-    def test_node_repr_with_multiple_neighbors(self):
+    def test_node_str_with_multiple_neighbors(self):
         self.g.connect(self.n[0], self.n[1])
         self.g.connect(self.n[0], self.n[2])
         # Because sets are unordered data structures, the neighbors may appear
         # in different order in different runs.
-        assert self.n[0].__repr__() in ("0 -> 1, 2", "0 -> 2, 1")
+        assert str(self.n[0]) in ("0 -> {1, 2}", "0 -> {2, 1}")

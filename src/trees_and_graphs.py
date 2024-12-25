@@ -7,10 +7,13 @@ class Node:
         self._neighbors: set["Node"] = set()
 
     def __repr__(self) -> str:
+        return "Node(%s)" % repr(self.data)
+
+    def __str__(self) -> str:
         neighbors = ", ".join(
             str(neighbor.data) for neighbor in self._neighbors
         )
-        return str(self.data) + (f" -> {neighbors}" if neighbors else "")
+        return str(self.data) + (" -> {%s}" % neighbors if neighbors else "")
 
     @property
     def neighbors(self):
