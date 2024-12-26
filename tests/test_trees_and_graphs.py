@@ -38,7 +38,7 @@ class TestGraphAndNode:
         self.g.connect(self.n[0], self.n[1], both_ways=True)
         assert self.g.are_connected(self.n[0], self.n[1], both_ways=True)
 
-    def test_connect_one_to_many_single_direction(self):
+    def test_connect_one_to_many_in_one_way(self):
         for i in range(1, 5):
             self.g.connect(self.n[0], self.n[i])
         for i in range(1, 5):
@@ -61,7 +61,7 @@ class TestGraphAndNode:
         assert self.n[1].points_to(self.n[2])
         assert not self.n[2].points_to(self.n[1])
 
-    def test_connect_many_to_one_single_direction(self):
+    def test_connect_many_to_one_in_one_way(self):
         for i in range(1, 5):
             self.g.connect(self.n[i], self.n[0])
         for i in range(1, 5):
