@@ -8,7 +8,7 @@ class Node:
         self._neighbors: set[Self] = set()
 
     def __repr__(self) -> str:
-        return "Node(%s)" % repr(self.data)
+        return f"{self.__class__.__name__}({repr(self.data)})"
 
     def __str__(self) -> str:
         neighbors = ", ".join(
@@ -20,12 +20,18 @@ class Node:
     def neighbors(self):
         return self._neighbors.copy()
 
-    def add_neighbor(self, neighbor: Self, graph: "Graph") -> None:
+    def add_neighbor(
+        self, neighbor: Self, graph: "Graph", both_ways: bool = False
+    ) -> None:
         self._neighbors.add(neighbor)
         graph.add(neighbor)
+        if both_ways and self not in neighbor.neighbors:
+            neighbor.add_neighbor(self, graph)
 
-    def remove_neighbor(self, neighbor: Self) -> None:
+    def remove_neighbor(self, neighbor: Self, both_ways: bool = False) -> None:
         self._neighbors.discard(neighbor)
+        if both_ways and self in neighbor.neighbors:
+            neighbor.remove_neighbor(self)
 
     def points_to(self, other: Self) -> bool:
         return other in self._neighbors
@@ -38,7 +44,7 @@ class Graph:
     def __repr__(self) -> str:
         nodes_count = len(self._nodes)
         nodes_plural = "s" if len(self._nodes) != 1 else ""
-        return f"Graph({nodes_count} node{nodes_plural})"
+        return f"{self.__class__.__name__}({nodes_count} node{nodes_plural})"
 
     @property
     def nodes(self):
@@ -53,19 +59,44 @@ class Graph:
             self.disconnect(node, other_node, both_ways=True)
 
     def connect(self, a: Node, b: Node, both_ways: bool = False) -> None:
-        a.add_neighbor(b, self)
-        if both_ways:
-            self.connect(b, a)
+        a.add_neighbor(b, self, both_ways=both_ways)
 
     def disconnect(self, a: Node, b: Node, both_ways: bool = False) -> None:
-        a.remove_neighbor(b)
-        if both_ways:
-            self.disconnect(b, a)
+        a.remove_neighbor(b, both_ways=both_ways)
 
     def are_connected(self, a: Node, b: Node, both_ways: bool = False) -> bool:
         if both_ways:
-            return a in b.neighbors and b in a.neighbors
-        return a in b.neighbors or b in a.neighbors
+            return a.points_to(b) and b.points_to(a)
+        return a.points_to(b) or b.points_to(a)
+
+
+class UndirectedNode(Node):
+    def add_neighbor(self, neighbor: Self, graph: "UndirectedGraph"):
+        super().add_neighbor(neighbor, graph, both_ways=True)
+
+    def remove_neighbor(self, neighbor: Self):
+        super().remove_neighbor(neighbor, both_ways=True)
+
+
+class UndirectedGraph(Graph):
+    """Graph where all connections are in both ways."""
+
+    def __init__(self, nodes: set[UndirectedNode] = set()):
+        super().__init__(nodes)
+
+    def remove(self, node):
+        self._nodes.discard(node)
+        for other_node in self._nodes:
+            self.disconnect(node, other_node)
+
+    def connect(self, a: UndirectedNode, b: UndirectedNode):
+        a.add_neighbor(b, self)
+
+    def disconnect(self, a: UndirectedNode, b: UndirectedNode):
+        a.remove_neighbor(b)
+
+    def are_connected(self, a: UndirectedNode, b: UndirectedNode):
+        return super().are_connected(a, b, both_ways=True)
 
 
 def check_route(a: Node, b: Node) -> bool:
