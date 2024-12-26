@@ -1,11 +1,11 @@
-from typing import Iterable
+from typing import Iterable, Self
 
 
 class Node:
     def __init__(self, data):
         self.data = data
         self.visited = False
-        self._neighbors: set["Node"] = set()
+        self._neighbors: set[Self] = set()
 
     def __repr__(self) -> str:
         return "Node(%s)" % repr(self.data)
@@ -20,14 +20,14 @@ class Node:
     def neighbors(self):
         return self._neighbors.copy()
 
-    def add_neighbor(self, neighbor: "Node", graph: "Graph") -> None:
+    def add_neighbor(self, neighbor: Self, graph: "Graph") -> None:
         self._neighbors.add(neighbor)
         graph.add(neighbor)
 
-    def remove_neighbor(self, neighbor: "Node") -> None:
+    def remove_neighbor(self, neighbor: Self) -> None:
         self._neighbors.discard(neighbor)
 
-    def points_to(self, other: "Node") -> bool:
+    def points_to(self, other: Self) -> bool:
         return other in self._neighbors
 
 
