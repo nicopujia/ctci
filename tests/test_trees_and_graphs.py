@@ -143,14 +143,16 @@ class TestGraphAndNode:
         assert self.n[0] not in self.g.nodes
 
     def test_remove_node_with_connections(self):
-        for i in range(2):
+        for i in range(4):
             self.g.connect(self.n[i], self.n[i + 1])
         self.g.remove(self.n[1])
         assert self.n[0] in self.g.nodes
         assert self.n[1] not in self.g.nodes
         assert self.n[2] in self.g.nodes
-        for i in range(3):
-            assert not self.n[i].neighbors
+        assert self.n[3] in self.g.nodes
+        assert self.g.are_connected(self.n[2], self.n[3])
+        for i in range(4):
+            assert self.n[1] not in self.n[i].neighbors
 
     def test_remove_node_with_connections_from_two_graphs(self):
         self.g.connect(self.n[0], self.n[1], both_ways=True)
@@ -288,14 +290,16 @@ class TestUndirectedGraphAndItsNode:
         assert self.n[0] not in self.g.nodes
 
     def test_remove_node_with_connections(self):
-        for i in range(2):
+        for i in range(4):
             self.g.connect(self.n[i], self.n[i + 1])
         self.g.remove(self.n[1])
         assert self.n[0] in self.g.nodes
         assert self.n[1] not in self.g.nodes
         assert self.n[2] in self.g.nodes
-        for i in range(3):
-            assert not self.n[i].neighbors
+        assert self.n[3] in self.g.nodes
+        assert self.g.are_connected(self.n[2], self.n[3])
+        for i in range(4):
+            assert self.n[1] not in self.n[i].neighbors
 
     def test_remove_node_with_connections_from_two_graphs(self):
         self.g.connect(self.n[0], self.n[1])
