@@ -67,19 +67,21 @@ class Graph:
             return a in b.neighbors and b in a.neighbors
         return a in b.neighbors or b in a.neighbors
 
-    def check_route_between_nodes(self, a: Node, b: Node) -> bool:
-        neighbors = a.neighbors
-        while neighbors:
-            previous_neighbors = neighbors.copy()
-            for neighbor in neighbors:
-                if neighbor is b:
-                    return True
-                neighbor.visited = True
-            neighbors.clear()
-            for previous_neighbor in previous_neighbors:
-                unvisited_neighbors = filter(
-                    lambda node: not node.visited,
-                    previous_neighbor.neighbors,
-                )
-                neighbors.update(unvisited_neighbors)
-        return False
+
+def check_route(a: Node, b: Node) -> bool:
+    """Return whether or not there is a route between nodes `a` and `b`."""
+    neighbors = a.neighbors
+    while neighbors:
+        previous_neighbors = neighbors.copy()
+        for neighbor in neighbors:
+            if neighbor is b:
+                return True
+            neighbor.visited = True
+        neighbors.clear()
+        for previous_neighbor in previous_neighbors:
+            unvisited_neighbors = filter(
+                lambda node: not node.visited,
+                previous_neighbor.neighbors,
+            )
+            neighbors.update(unvisited_neighbors)
+    return False
