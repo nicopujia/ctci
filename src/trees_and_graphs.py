@@ -24,7 +24,7 @@ class Node:
         self, neighbor: Self, graph: "Graph", both_ways: bool = False
     ) -> None:
         self._neighbors.add(neighbor)
-        graph.add(neighbor)
+        graph.add(neighbor, self)
         if both_ways and self not in neighbor.neighbors:
             neighbor.add_neighbor(self, graph)
 

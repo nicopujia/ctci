@@ -29,6 +29,21 @@ class TestGraphAndNode:
         assert self.n[0].points_to(self.n[1])
         assert not self.n[1].points_to(self.n[0])
 
+    def test_connect_outside_to_inside_node_in_one_way(self):
+        node = Node(10)
+        self.g.connect(node, self.n[0])
+        assert node.points_to(self.n[0])
+        assert not self.n[0].points_to(node)
+        assert node in self.g.nodes
+        assert self.n[0] in self.g.nodes
+
+    def test_connect_outside_to_inside_node_in_the_other_way(self):
+        node = Node(10)
+        self.g.connect(self.n[0], node)
+        assert self.g.are_connected(node, self.n[0])
+        assert node in self.g.nodes
+        assert self.n[0] in self.g.nodes
+
     def test_connect_same_nodes_multiple_times_keeps_one_connection(self):
         self.g.connect(self.n[0], self.n[1])
         self.g.connect(self.n[0], self.n[1])
@@ -227,6 +242,13 @@ class TestUndirectedGraphAndItsNode:
     def test_connect_one_to_another(self):
         self.g.connect(self.n[0], self.n[1])
         assert self.g.are_connected(self.n[0], self.n[1])
+
+    def test_connect_outside_to_inside_node(self):
+        node = UndirectedNode(10)
+        self.g.connect(node, self.n[0])
+        assert self.g.are_connected(node, self.n[0])
+        assert node in self.g.nodes
+        assert self.n[0] in self.g.nodes
 
     def test_connect_same_nodes_multiple_times_keeps_one_connection(self):
         self.g.connect(self.n[0], self.n[1])
