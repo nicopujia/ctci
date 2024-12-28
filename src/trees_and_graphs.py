@@ -99,6 +99,32 @@ class UndirectedGraph(Graph):
         return super().are_connected(a, b, both_ways=True)
 
 
+class TreeNode:
+    def __init__(self, data, parent: Self | None = None):
+        self.data = data
+        self.parent = parent
+        self._children = set()
+        if parent:
+            parent.add_child(self)
+
+    def __repr__(self) -> str:
+        return f"TreeNode({self.data}" + (
+            f", parent={repr(self.parent)})" if self.parent else ")"
+        )
+
+    @property
+    def children(self):
+        return self._children.copy()
+
+    def add_child(self, child: Self) -> None:
+        self._children.add(child)
+        child.parent = self
+
+    def remove_child(self, child: Self) -> None:
+        self._children.discard(child)
+        child.parent = None
+
+
 def check_route(a: Node, b: Node) -> bool:
     """Return whether or not there is a route between nodes `a` and `b`."""
     neighbors = a.neighbors

@@ -1,6 +1,7 @@
 from src.trees_and_graphs import (
     Graph,
     Node,
+    TreeNode,
     UndirectedGraph,
     UndirectedNode,
     check_route,
@@ -374,6 +375,62 @@ class TestUndirectedGraphAndItsNode:
         # Because sets are unordered data structures, the neighbors may appear
         # in different order in different runs.
         assert str(self.n[0]) in ("0 -> {1, 2}", "0 -> {2, 1}")
+
+
+class TestTreeNode:
+    def setup_method(self):
+        self.root = TreeNode(0)
+
+    def test_root_node(self):
+        assert self.root.data == 0
+        assert self.root.parent is None
+        assert not self.root.children
+
+    def test_init_one_child(self):
+        child = TreeNode(1, parent=self.root)
+        assert child in self.root.children
+        assert child.parent is self.root
+        assert not child.children
+
+    def test_init_multiple_children(self):
+        for i in range(1, 11):
+            child = TreeNode(i, parent=self.root)
+            assert child in self.root.children
+            assert child.parent == self.root
+            assert not child.children
+        assert len(self.root.children) == 10
+
+    def test_init_grandchild(self):
+        child = TreeNode(1, parent=self.root)
+        grandchild = TreeNode(2, parent=child)
+        assert len(self.root.children) == 1
+        assert grandchild in child.children
+        assert grandchild.parent is child
+        assert not grandchild.children
+
+    def test_add_child(self):
+        future_child = TreeNode(1)
+        assert future_child.parent is None
+        assert future_child not in self.root.children
+        self.root.add_child(future_child)
+        assert future_child in self.root.children
+        assert future_child.parent is self.root
+
+    def test_remove_child(self):
+        child = TreeNode(1, parent=self.root)
+        self.root.remove_child(child)
+        assert child not in self.root.children
+        assert child.parent is None
+
+    def test_repr(self):
+        child = TreeNode(1, parent=self.root)
+        grandchild = TreeNode(2, parent=child)
+        assert repr(self.root) == "TreeNode(0)"
+        assert repr(child) == "TreeNode(1, parent=TreeNode(0))"
+        assert (
+            repr(grandchild)
+            == "TreeNode(2, parent=TreeNode(1, parent=TreeNode(0)))"
+        )
 
 
 class TestCheckRoute:
