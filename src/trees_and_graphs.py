@@ -103,7 +103,7 @@ class TreeNode:
     def __init__(self, data, parent: Self | None = None):
         self.data = data
         self.parent = parent
-        self._children = set()
+        self._children = []
         if parent:
             parent.add_child(self)
 
@@ -117,11 +117,11 @@ class TreeNode:
         return self._children.copy()
 
     def add_child(self, child: Self) -> None:
-        self._children.add(child)
+        self._children.append(child)
         child.parent = self
 
     def remove_child(self, child: Self) -> None:
-        self._children.discard(child)
+        self._children.remove(child)
         child.parent = None
 
 
