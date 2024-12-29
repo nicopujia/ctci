@@ -142,3 +142,18 @@ def check_route(a: Node, b: Node) -> bool:
             )
             neighbors.update(unvisited_neighbors)
     return False
+
+
+def generate_minimal_bst(array: Iterable[int]) -> TreeNode:
+    if len(array) == 1:
+        return TreeNode(array[0])
+    if len(array) == 2:
+        root = TreeNode(array[1])
+        root.add_child(TreeNode(array[0]))
+        return root
+    array = list(array)
+    middle_index = len(array) // 2
+    root = TreeNode(array.pop(middle_index))
+    root.add_child(generate_minimal_bst(array[:middle_index]))
+    root.add_child(generate_minimal_bst(array[middle_index:]))
+    return root

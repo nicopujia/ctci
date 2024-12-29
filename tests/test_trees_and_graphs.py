@@ -5,6 +5,7 @@ from src.trees_and_graphs import (
     UndirectedGraph,
     UndirectedNode,
     check_route,
+    generate_minimal_bst,
 )
 
 
@@ -520,3 +521,60 @@ class TestCheckRoute:
         self.g.connect(loop_1, loop_2)
         self.g.connect(loop_2, a)
         assert not check_route(a, b)
+
+
+class TestGenerateMinimalBST:
+    def assert_node(
+        self,
+        node: TreeNode,
+        expected_data,
+        expected_parent: TreeNode | None,
+        expected_children_count: int,
+    ):
+        assert node.data == expected_data
+        assert node.parent is expected_parent
+        assert len(node.children) == expected_children_count
+
+    def test_one_element(self):
+        root = generate_minimal_bst([1])
+        self.assert_node(root, 1, None, 0)
+
+    def test_two_elements(self):
+        root = generate_minimal_bst([1, 2])
+        self.assert_node(root, 2, None, 1)
+        self.assert_node(root.children[0], 1, root, 0)
+
+    def test_three_elements(self):
+        root = generate_minimal_bst([1, 2, 3])
+        self.assert_node(root, 2, None, 2)
+        self.assert_node(root.children[0], 1, root, 0)
+        self.assert_node(root.children[1], 3, root, 0)
+
+    def test_large_even_amount_of_elements(self):
+        root = generate_minimal_bst([i for i in range(1, 11)])
+        self.assert_node(root, 6, None, 2)
+        l, r = root.children
+        self.assert_node(l, 3, root, 2)
+        self.assert_node(r, 9, root, 2)
+        self.assert_node(l.children[0], 2, l, 1)
+        self.assert_node(l.children[1], 5, l, 1)
+        self.assert_node(r.children[0], 8, r, 1)
+        self.assert_node(r.children[1], 10, r, 0)
+        self.assert_node(l.children[0].children[0], 1, l.children[0], 0)
+        self.assert_node(l.children[1].children[0], 4, l.children[1], 0)
+        self.assert_node(r.children[0].children[0], 7, r.children[0], 0)
+
+    def test_large_odd_amount_of_elements(self):
+        root = generate_minimal_bst([i for i in range(1, 12)])
+        self.assert_node(root, 6, None, 2)
+        l, r = root.children
+        self.assert_node(l, 3, root, 2)
+        self.assert_node(r, 9, root, 2)
+        self.assert_node(l.children[0], 2, l, 1)
+        self.assert_node(l.children[1], 5, l, 1)
+        self.assert_node(r.children[0], 8, r, 1)
+        self.assert_node(r.children[1], 11, r, 1)
+        self.assert_node(l.children[0].children[0], 1, l.children[0], 0)
+        self.assert_node(l.children[1].children[0], 4, l.children[1], 0)
+        self.assert_node(r.children[0].children[0], 7, r.children[0], 0)
+        self.assert_node(r.children[1].children[0], 10, r.children[1], 0)
