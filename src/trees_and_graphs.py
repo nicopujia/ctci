@@ -113,7 +113,7 @@ class TreeNode:
         )
 
     @property
-    def children(self):
+    def children(self) -> list[Self]:
         return self._children.copy()
 
     def add_child(self, child: Self) -> None:
