@@ -8,6 +8,11 @@ class Node:
     next: Self | None = None
 
     def __repr__(self) -> str:
+        return f"Node({self.data}" + (
+            f", next={repr(self.next)})" if self.next else ")"
+        )
+
+    def __str__(self) -> str:
         return str(self.data) + (f" -> {self.next}" if self.next else "")
 
     def __iter__(self) -> Iterator[Self]:

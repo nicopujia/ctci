@@ -34,10 +34,7 @@ class TestNode:
         self.node.next = next_node
         assert self.node.next is next_node
 
-    def test_repr(self):
-        assert self.node.__repr__() == "1"
-
-    def test_linked_lists_next_and_data(self):
+    def test_next_and_data(self):
         assert self.head.data == 4
         assert self.head.next.data == 2
         assert self.head.next.next.data == 3
@@ -45,38 +42,46 @@ class TestNode:
         assert self.head.next.next.next.next.data == 5
         assert self.head.next.next.next.next.next is None
 
-    def test_linked_list_repr(self):
-        assert self.head.__repr__() == "4 -> 2 -> 3 -> 1 -> 5"
-        assert self.head.next.__repr__() == "2 -> 3 -> 1 -> 5"
-        assert self.head.next.next.__repr__() == "3 -> 1 -> 5"
-        assert self.head.next.next.next.__repr__() == "1 -> 5"
-        assert self.head.next.next.next.next.__repr__() == "5"
+    def test_str(self):
+        assert str(self.head) == "4 -> 2 -> 3 -> 1 -> 5"
+        assert str(self.head.next) == "2 -> 3 -> 1 -> 5"
+        assert str(self.head.next.next) == "3 -> 1 -> 5"
+        assert str(self.head.next.next.next) == "1 -> 5"
+        assert str(self.head.next.next.next.next) == "5"
+
+    def test_repr(self):
+        assert (
+            repr(self.head)
+            == "Node(4, next=Node(2, next=Node(3, next=Node(1,"
+            " next=Node(5)))))"
+        )
+        assert repr(self.node) == "Node(1)"
 
 
 class TestRemoveDups:
     def test_single_node(self):
         head = Node(1)
-        assert remove_dups(head).__repr__() == "1"
+        assert str(remove_dups(head)) == "1"
 
     def test_no_dups(self):
         head = Node(1, Node(2, Node(3)))
-        assert remove_dups(head).__repr__() == "1 -> 2 -> 3"
+        assert str(remove_dups(head)) == "1 -> 2 -> 3"
 
     def test_same_value_always(self):
         head = Node(1, Node(1, Node(1)))
-        assert remove_dups(head).__repr__() == "1"
+        assert str(remove_dups(head)) == "1"
 
     def test_consecutive_dups(self):
         head = Node(1, Node(1, Node(2, Node(2))))
-        assert remove_dups(head).__repr__() == "1 -> 2"
+        assert str(remove_dups(head)) == "1 -> 2"
 
     def test_non_consecutive_dups(self):
         head = Node(1, Node(2, Node(1, Node(2))))
-        assert remove_dups(head).__repr__() == "1 -> 2"
+        assert str(remove_dups(head)) == "1 -> 2"
 
     def test_long_linked_list_with_dups(self):
         head = Node(1, Node(2, Node(3, Node(1, Node(1, Node(4, Node(3)))))))
-        assert remove_dups(head).__repr__() == "1 -> 2 -> 3 -> 4"
+        assert str(remove_dups(head)) == "1 -> 2 -> 3 -> 4"
 
 
 class TestGetKthToLast:
@@ -116,15 +121,15 @@ class TestDeleteMiddleNode:
 
     def test_delete_first_node(self):
         delete_middle_node(self.head)
-        assert self.head.__repr__() == "2 -> 3"
+        assert str(self.head) == "2 -> 3"
 
     def test_delete_second_node(self):
         delete_middle_node(self.head.next)
-        assert self.head.__repr__() == "1 -> 3"
+        assert str(self.head) == "1 -> 3"
 
     def test_delete_last_node(self):
         delete_middle_node(self.head.next.next)
-        assert self.head.__repr__() == "1 -> 2 -> 3"
+        assert str(self.head) == "1 -> 2 -> 3"
 
 
 def test_partition():
@@ -142,21 +147,21 @@ def test_partition():
 
 
 def test_sum_lists():
-    assert (
+    assert str(
         sum_lists(
             Node(7, Node(1, Node(6))),
             Node(5, Node(9, Node(2))),
-        ).__repr__()
+        )
         == "2 -> 1 -> 9"
     )
 
 
 def test_sum_lists_follow_up():
-    assert (
+    assert str(
         sum_lists_follow_up(
             Node(6, Node(1, Node(7))),
             Node(2, Node(9, Node(5))),
-        ).__repr__()
+        )
         == "9 -> 1 -> 2"
     )
 

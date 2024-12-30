@@ -7,8 +7,8 @@ from .linked_lists import Node as LinkedListNode
 class Stack:
     top: LinkedListNode | None = None
 
-    def __repr__(self) -> str:
-        return self.top.__repr__()
+    def __str__(self) -> str:
+        return str(self.top) if self.top else "<empty stack>"
 
     def push(self, item: int) -> None:
         self.top = LinkedListNode(item, self.top if self.top else None)

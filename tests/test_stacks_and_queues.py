@@ -51,14 +51,14 @@ class TestStack:
         assert self.stack.pop() == 1
         assert self.stack.is_empty()
 
-    def test_repr_with_items(self):
+    def test_str_with_items(self):
         self.stack.push(1)
         self.stack.push(2)
         self.stack.push(3)
-        assert self.stack.__repr__() == "3 -> 2 -> 1"
+        assert str(self.stack) == "3 -> 2 -> 1"
 
-    def test_repr_without_items(self):
-        assert self.stack.__repr__() == "None"
+    def test_str_without_items(self):
+        assert str(self.stack) == "<empty stack>"
 
 
 class TestQueue:
