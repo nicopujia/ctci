@@ -6,6 +6,7 @@ from src.trees_and_graphs import (
     UndirectedNode,
     check_route,
     generate_minimal_bst,
+    get_lists_of_depths,
 )
 
 
@@ -578,3 +579,26 @@ class TestGenerateMinimalBST:
         self.assert_node(l.children[1].children[0], 4, l.children[1], 0)
         self.assert_node(r.children[0].children[0], 7, r.children[0], 0)
         self.assert_node(r.children[1].children[0], 10, r.children[1], 0)
+
+
+class TestGetListsOfDepth:
+    def test_with_one_level(self):
+        root = generate_minimal_bst([1])
+        lists = get_lists_of_depths(root)
+        assert len(lists) == 1
+        assert str(lists[0]) == "1"
+
+    def test_with_two_levels(self):
+        root = generate_minimal_bst([1, 2, 3])
+        lists = get_lists_of_depths(root)
+        assert len(lists) == 2
+        assert str(lists[0]) == "2"
+        assert str(lists[1]) == "1 -> 3"
+
+    def test_with_three_levels(self):
+        root = generate_minimal_bst([1, 2, 3, 4, 5, 6])
+        lists = get_lists_of_depths(root)
+        assert len(lists) == 3
+        assert str(lists[0]) == "3"
+        assert str(lists[1]) == "2 -> 5"
+        assert str(lists[2]) == "1 -> 4 -> 6"
