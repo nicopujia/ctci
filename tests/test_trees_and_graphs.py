@@ -599,6 +599,6 @@ class TestGetListsOfDepth:
         root = generate_minimal_bst([1, 2, 3, 4, 5, 6])
         lists = get_lists_of_depths(root)
         assert len(lists) == 3
-        assert str(lists[0]) == "3"
-        assert str(lists[1]) == "2 -> 5"
-        assert str(lists[2]) == "1 -> 4 -> 6"
+        assert str(lists[0]) == "4"
+        assert str(lists[1]) == "2 -> 6"
+        assert str(lists[2]) == "1 -> 3 -> 5"

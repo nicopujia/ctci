@@ -1,5 +1,7 @@
 from typing import Iterable, Self
 
+from .linked_lists import Node as LinkedListNode
+
 
 class Node:
     def __init__(self, data):
@@ -157,3 +159,25 @@ def generate_minimal_bst(array: Iterable[int]) -> TreeNode:
     root.add_child(generate_minimal_bst(array[:middle_index]))
     root.add_child(generate_minimal_bst(array[middle_index:]))
     return root
+
+
+def get_lists_of_depths(root: TreeNode) -> list[LinkedListNode]:
+    lists = [LinkedListNode(root.data)]
+
+    def add_children_levels(children):
+        nonlocal lists
+        next_level_nodes = []
+        head = tail = LinkedListNode(children[0].data)
+        for i in range(len(children) - 1):
+            tail.next = LinkedListNode(children[i + 1].data)
+            tail = tail.next
+            next_level_nodes.extend(children[i].children)
+        next_level_nodes.extend(children[i + 1].children)
+        lists.append(head)
+        if next_level_nodes:
+            add_children_levels(next_level_nodes)
+
+    if root.children:
+        add_children_levels(root.children)
+
+    return lists
