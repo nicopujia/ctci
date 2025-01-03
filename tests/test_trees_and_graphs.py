@@ -541,18 +541,18 @@ class TestGenerateMinimalBST:
         self.assert_node(root, 1, None, 0)
 
     def test_two_elements(self):
-        root = generate_minimal_bst([1, 2])
+        root = generate_minimal_bst(range(1, 3))
         self.assert_node(root, 2, None, 1)
         self.assert_node(root.children[0], 1, root, 0)
 
     def test_three_elements(self):
-        root = generate_minimal_bst([1, 2, 3])
+        root = generate_minimal_bst(range(1, 4))
         self.assert_node(root, 2, None, 2)
         self.assert_node(root.children[0], 1, root, 0)
         self.assert_node(root.children[1], 3, root, 0)
 
     def test_large_even_amount_of_elements(self):
-        root = generate_minimal_bst([i for i in range(1, 11)])
+        root = generate_minimal_bst(range(1, 11))
         self.assert_node(root, 6, None, 2)
         l, r = root.children
         self.assert_node(l, 3, root, 2)
@@ -566,7 +566,7 @@ class TestGenerateMinimalBST:
         self.assert_node(r.children[0].children[0], 7, r.children[0], 0)
 
     def test_large_odd_amount_of_elements(self):
-        root = generate_minimal_bst([i for i in range(1, 12)])
+        root = generate_minimal_bst(range(1, 12))
         self.assert_node(root, 6, None, 2)
         l, r = root.children
         self.assert_node(l, 3, root, 2)
@@ -589,14 +589,14 @@ class TestGetListsOfDepth:
         assert str(lists[0]) == "1"
 
     def test_with_two_levels(self):
-        root = generate_minimal_bst([1, 2, 3])
+        root = generate_minimal_bst(range(1, 4))
         lists = get_lists_of_depths(root)
         assert len(lists) == 2
         assert str(lists[0]) == "2"
         assert str(lists[1]) == "1 -> 3"
 
     def test_with_three_levels(self):
-        root = generate_minimal_bst([1, 2, 3, 4, 5, 6])
+        root = generate_minimal_bst(range(1, 7))
         lists = get_lists_of_depths(root)
         assert len(lists) == 3
         assert str(lists[0]) == "4"
