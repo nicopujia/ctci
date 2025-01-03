@@ -4,6 +4,7 @@ from src.trees_and_graphs import (
     TreeNode,
     UndirectedGraph,
     UndirectedNode,
+    check_balanced,
     check_route,
     generate_minimal_bst,
     get_lists_of_depths,
@@ -602,3 +603,35 @@ class TestGetListsOfDepth:
         assert str(lists[0]) == "4"
         assert str(lists[1]) == "2 -> 6"
         assert str(lists[2]) == "1 -> 3 -> 5"
+
+
+class TestCheckBalanced:
+    def setup_method(self):
+        self.root = TreeNode(1)
+
+    def test_one_node(self):
+        assert check_balanced(self.root)
+
+    def test_two_nodes(self):
+        self.root.add_child(TreeNode(2))
+        assert check_balanced(self.root)
+
+    def test_three_nodes_balanced(self):
+        self.root.add_child(TreeNode(2))
+        self.root.add_child(TreeNode(3))
+        assert check_balanced(self.root)
+
+    def test_three_nodes_unbalanced(self):
+        child = TreeNode(2, parent=self.root)
+        child.add_child(TreeNode(3))
+        assert not check_balanced(self.root)
+
+    def test_ten_nodes_balanced(self):
+        assert check_balanced(generate_minimal_bst(range(10)))
+
+    def test_ten_nodes_unbalanced(self):
+        root = generate_minimal_bst(range(10))
+        leaf = root.children[0].children[1].children[0]
+        leaf.parent.remove_child(leaf)
+        root.children[0].children[0].children[0].add_child(leaf)
+        assert not check_balanced(self.root)
